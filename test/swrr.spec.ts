@@ -11,13 +11,14 @@ const mock_kv = () => {
 	let store = new Map();
 
 	return {
-		put: Spy.spy((key, value, metadata) => {
+		put: Spy.spy(async (key, value, metadata) => {
 			store.set(key, { value, metadata });
+			return true;
 		}),
-		get: Spy.spy((key) => {
+		get: Spy.spy(async (key) => {
 			return store.get(key)?.value;
 		}),
-		getWithMetadata: Spy.spy((key) => {
+		getWithMetadata: Spy.spy(async (key) => {
 			return store.get(key) ?? { value: undefined, metadata: {} };
 		}),
 	};
