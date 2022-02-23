@@ -12,19 +12,24 @@ export type Lifetimes = {
 	 * The ultimate ttl, the time at which a SWR will not respond.
 	 */
 	maxTtl?: number;
-}
+};
 
-export type Options = Lifetimes & { type?: 'json' | 'arrayBuffer' | 'stream' | 'text' };
+export type Options = Lifetimes & {
+	type?: 'json' | 'arrayBuffer' | 'stream' | 'text';
+};
 
-interface Resource<T extends (...args: any[]) => any> {
-	(...args: Parameters<T>): Promise<ReturnType<T>>;
-}
+type Resource<T extends (...args: any[]) => any> = (
+	...args: Parameters<T>
+) => Promise<ReturnType<T>>;
 
 const make_id = (...key: string[]) => key.join('__');
 
 export const make = (binding: KVNamespace, context: ExecutionContext) => {
-
-	return <T extends (...args: any[]) => any>(name: string, handler: T, options?: Options): Resource<T> => {
+	return <T extends (...args: any[]) => any>(
+		name: string,
+		handler: T,
+		options?: Options,
+	): Resource<T> => {
 		type Value = ReturnType<T>;
 		type Metadata = Required<Pick<Lifetimes, 'ttl'>>;
 
@@ -35,8 +40,10 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 		};
 
 		return new Proxy(handler, {
-			async apply(target, thisArg, argsArray) {
-				const hashed_args = argsArray.length ? await identify(argsArray, SHA1) : '';
+			async apply(target, this_arg, args_array) {
+				const hashed_args = args_array.length
+					? await identify(args_array, SHA1)
+					: '';
 				const key = make_id(name, hashed_args);
 
 				const result = await read<Value, Metadata>(binding, key, {
@@ -47,11 +54,17 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 				});
 
 				async function call() {
-					const raw_result = await Reflect.apply(target, thisArg, argsArray);
+					const raw_result = await Reflect.apply(
+						target,
+						this_arg,
+						args_array,
+					);
 
 					context.waitUntil(
 						write(binding, key, raw_result, {
-							metadata: { ttl: Date.now() + lifetimes.ttl * 1000 },
+							metadata: {
+								ttl: Date.now() + lifetimes.ttl * 1000,
+							},
 							expirationTtl: lifetimes.maxTtl,
 						}),
 					);
@@ -60,7 +73,8 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 				}
 
 				if (result.value != null) {
-					if (result.metadata!.ttl >= Date.now()) context.waitUntil(call());
+					if (result.metadata!.ttl >= Date.now())
+						context.waitUntil(call());
 
 					return result.value;
 				}

@@ -1,8 +1,8 @@
 // @ts-check
-import dts from "rollup-plugin-dts";
-import { transpileModule } from "typescript";
-import tsconfig from "./tsconfig.json";
-import pkg from "./package.json";
+import dts from 'rollup-plugin-dts';
+import { transpileModule } from 'typescript';
+import tsconfig from './tsconfig.json';
+import pkg from './package.json';
 
 /**
  * @param {boolean} isESM
@@ -10,8 +10,8 @@ import pkg from "./package.json";
  */
 function output(isESM) {
 	return {
-		format: isESM ? "esm" : "cjs",
-		file: pkg.exports["."][isESM ? "import" : "require"],
+		format: isESM ? 'esm' : 'cjs',
+		file: pkg.exports['.'][isESM ? 'import' : 'require'],
 		preferConst: true,
 		esModule: false,
 		freeze: false,
@@ -23,23 +23,18 @@ function output(isESM) {
  * @type {import("rollup").RollupOptions}
  */
 const source = {
-	input: "src/index.ts",
-	output: [
-		output(true),
-		output(false),
-	],
-	external: [
-		/worktop/,
-		/object-identity/
-	],
+	input: 'src/index.ts',
+	output: [output(true), output(false)],
+	external: [/worktop/, /object-identity/],
 	plugins: [
 		{
-			name: "typescript",
+			name: 'typescript',
 			transform(code, file) {
 				if (!/\.ts$/.test(file)) return code;
 				// @ts-ignore
 				let output = transpileModule(code, {
-					...tsconfig, fileName: file,
+					...tsconfig,
+					fileName: file,
 				});
 				return {
 					code: output.outputText,
@@ -54,14 +49,12 @@ const source = {
  * @type {import("rollup").RollupOptions}
  */
 const types = {
-	input: "src/index.ts",
+	input: 'src/index.ts',
 	output: {
 		file: pkg.types,
-		format: "esm",
+		format: 'esm',
 	},
-	plugins: [
-		dts(),
-	],
+	plugins: [dts()],
 };
 
 // Multiple Rollup configs

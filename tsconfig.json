@@ -4,19 +4,9 @@
 		"rootDir": "./src",
 		"target": "esnext",
 		"removeComments": false,
-		"lib": [
-			"esnext"
-		],
-		"types": [
-			"@types/node",
-			"@cloudflare/workers-types"
-		]
+		"lib": ["esnext"],
+		"types": ["@types/node", "@cloudflare/workers-types"]
 	},
-	"include": [
-		"src/**/*",
-		"test/**/*"
-	],
-	"exclude": [
-		"node_modules"
-	]
+	"include": ["src/**/*", "test/**/*"],
+	"exclude": ["node_modules"]
 }
