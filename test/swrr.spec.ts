@@ -28,11 +28,12 @@ test.after.each(() => {
 	Spy.restoreAll();
 });
 
+const context = {
+	waitUntil: Spy.spy(),
+};
+
 test('case', async () => {
 	// preamble
-	const context = {
-		waitUntil: Spy.spy(),
-	};
 	const binding = mock_kv();
 
 	// ~> module scope

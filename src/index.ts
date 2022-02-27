@@ -22,7 +22,7 @@ type Resource<T extends (...args: any[]) => any> = (
 	...args: Parameters<T>
 ) => Promise<ReturnType<T>>;
 
-const make_id = (...key: string[]) => key.join('__');
+const make_id = (...key: string[]) => key.join('::');
 
 export const make = (binding: KVNamespace, context: ExecutionContext) => {
 	return <T extends (...args: any[]) => any>(
@@ -41,10 +41,9 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 
 		return new Proxy(handler, {
 			async apply(target, this_arg, args_array) {
-				const hashed_args = args_array.length
-					? await identify(args_array, SHA1)
-					: '';
-				const key = make_id(name, hashed_args);
+				const key = args_array.length
+					? make_id(name, await identify(args_array, SHA1))
+					: name;
 
 				const result = await read<Value, Metadata>(binding, key, {
 					metadata: true,
