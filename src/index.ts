@@ -52,7 +52,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					type,
 				});
 
-				async function call() {
+				async function call(date = Date.now()) {
 					const raw_result = await Reflect.apply(
 						target,
 						this_arg,
@@ -62,7 +62,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					context.waitUntil(
 						write(binding, key, raw_result, {
 							metadata: {
-								ttl: Date.now() + lifetimes.ttl * 1000,
+								ttl: date + lifetimes.ttl * 1000,
 							},
 							expirationTtl: lifetimes.maxTtl,
 						}),
@@ -72,8 +72,9 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 				}
 
 				if (result.value != null) {
-					if (result.metadata!.ttl >= Date.now())
-						context.waitUntil(call());
+					const called_at = Date.now();
+					if (called_at >= result.metadata!.ttl)
+						context.waitUntil(call(called_at));
 
 					return result.value;
 				}
