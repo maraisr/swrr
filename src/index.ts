@@ -31,7 +31,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 		options?: Options,
 	): Resource<T> => {
 		type Value = ReturnType<T>;
-		type Metadata = Required<Pick<Lifetimes, 'ttl'>>;
+		type Metadata = { expireAt: number };
 
 		const type = options?.type || 'json';
 		const lifetimes: Required<Lifetimes> = {
@@ -60,9 +60,9 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					);
 
 					context.waitUntil(
-						write(binding, key, raw_result, {
+						write<Value, Metadata>(binding, key, raw_result, {
 							metadata: {
-								ttl: date + lifetimes.ttl * 1000,
+								expireAt: date + lifetimes.ttl * 1000
 							},
 							expirationTtl: lifetimes.maxTtl,
 						}),
@@ -73,7 +73,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 
 				if (result.value != null) {
 					const called_at = Date.now();
-					if (called_at >= result.metadata!.ttl)
+					if (called_at >= result.metadata!.expireAt)
 						context.waitUntil(call(called_at));
 
 					return result.value;
