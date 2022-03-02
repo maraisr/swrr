@@ -62,7 +62,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					context.waitUntil(
 						write<Value, Metadata>(binding, key, raw_result, {
 							metadata: {
-								expireAt: date + lifetimes.ttl * 1000
+								expireAt: date + lifetimes.ttl * 1000,
 							},
 							expirationTtl: lifetimes.maxTtl,
 						}),
@@ -73,8 +73,12 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 
 				if (result.value != null) {
 					const called_at = Date.now();
-					if (called_at >= result.metadata!.expireAt)
+					if (
+						result.metadata!.expireAt == null ||
+						called_at >= result.metadata!.expireAt
+					) {
 						context.waitUntil(call(called_at));
+					}
 
 					return result.value;
 				}
