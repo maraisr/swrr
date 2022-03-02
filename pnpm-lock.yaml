@@ -10,7 +10,7 @@ specifiers:
   rollup: ^2.68.0
   rollup-plugin-dts: ^4.1.0
   tsm: ^2.2.1
-  typescript: ^4.5.5
+  typescript: ^4.6.2
   uvu: ^0.5.3
   worktop: ^0.8.0-next.11
 
@@ -25,9 +25,9 @@ devDependencies:
   nanospy: 0.5.0
   prettier: 2.5.1
   rollup: 2.68.0
-  rollup-plugin-dts: 4.1.0_rollup@2.68.0+typescript@4.5.5
+  rollup-plugin-dts: 4.1.0_rollup@2.68.0+typescript@4.6.2
   tsm: 2.2.1
-  typescript: 4.5.5
+  typescript: 4.6.2
   uvu: 0.5.3
 
 packages:
@@ -373,7 +373,7 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /rollup-plugin-dts/4.1.0_rollup@2.68.0+typescript@4.5.5:
+  /rollup-plugin-dts/4.1.0_rollup@2.68.0+typescript@4.6.2:
     resolution: {integrity: sha512-rriXIm3jdUiYeiAAd1Fv+x2AxK6Kq6IybB2Z/IdoAW95fb4uRUurYsEYKa8L1seedezDeJhy8cfo8FEL9aZzqg==}
     engines: {node: '>=v12.22.7'}
     peerDependencies:
@@ -382,7 +382,7 @@ packages:
     dependencies:
       magic-string: 0.25.7
       rollup: 2.68.0
-      typescript: 4.5.5
+      typescript: 4.6.2
     optionalDependencies:
       '@babel/code-frame': 7.16.7
     dev: true
@@ -422,8 +422,8 @@ packages:
       esbuild: 0.14.21
     dev: true
 
-  /typescript/4.5.5:
-    resolution: {integrity: sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==}
+  /typescript/4.6.2:
+    resolution: {integrity: sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
