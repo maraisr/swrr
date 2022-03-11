@@ -5,11 +5,25 @@ import { SHA1 } from 'worktop/crypto';
 export type Lifetimes = {
 	/**
 	 * The amount of time to keep an entry in the cache, before refetching.
+	 *
+	 * @default 600
 	 */
 	ttl?: number;
 
 	/**
+	 * If there is an error, the amount of time to return stale data irrespective of its ttl. The
+	 * {@see maxTtl} is still considered ultimate ttl, however.
+	 *
+	 * 0 — means no ttl as to say instantly return error.
+	 *
+	 * @default 0
+	 */
+	errorTtl?: number;
+
+	/**
 	 * The ultimate ttl, the time at which a SWR will not respond.
+	 *
+	 * @default 1000
 	 */
 	maxTtl?: number;
 };
@@ -31,11 +45,15 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 		options?: Options,
 	): Resource<T> => {
 		type Value = ReturnType<T>;
-		type Metadata = { expireAt: number };
+		type Metadata = {
+			expireAt: number,
+			errorExpireAt: number
+		};
 
 		const type = options?.type || 'json';
 		const lifetimes: Required<Lifetimes> = {
 			ttl: options?.ttl ?? 600,
+			errorTtl: options?.errorTtl ?? 0,
 			maxTtl: options?.maxTtl ?? 1000,
 		};
 
@@ -52,17 +70,28 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					type,
 				});
 
+				const has_cached_copy = result.value != null;
+
 				async function call(date = Date.now()) {
-					const raw_result = await Reflect.apply(
-						target,
-						this_arg,
-						args_array,
-					);
+					try {
+						var raw_result = await Reflect.apply(
+							target,
+							this_arg,
+							args_array,
+						);
+					} catch(e) {
+						if (has_cached_copy && result!.metadata!.errorExpireAt >= date) {
+							return result.value;
+						}
+
+						throw e;
+					}
 
 					context.waitUntil(
 						write<Value, Metadata>(binding, key, raw_result, {
 							metadata: {
 								expireAt: date + lifetimes.ttl * 1000,
+								errorExpireAt: date + lifetimes.errorTtl * 1000,
 							},
 							expirationTtl: lifetimes.maxTtl,
 						}),
@@ -71,7 +100,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					return raw_result;
 				}
 
-				if (result.value != null) {
+				if (has_cached_copy) {
 					const called_at = Date.now();
 					if (
 						result.metadata!.expireAt == null ||
