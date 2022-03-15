@@ -1,6 +1,8 @@
 import { identify } from 'object-identity';
-import { read, write } from 'worktop/cfw.kv';
+
 import { SHA1 } from 'worktop/crypto';
+
+import type { Backplane, Type } from './backplane';
 
 export type Lifetimes = {
 	/**
@@ -15,7 +17,7 @@ export type Lifetimes = {
 };
 
 export type Options = Lifetimes & {
-	type?: 'json' | 'arrayBuffer' | 'stream' | 'text';
+	type?: Type;
 };
 
 type Resource<T extends (...args: any[]) => any> = (
@@ -24,14 +26,13 @@ type Resource<T extends (...args: any[]) => any> = (
 
 const make_id = (...key: string[]) => key.join('::');
 
-export const make = (binding: KVNamespace, context: ExecutionContext) => {
+export const make = (backplane: Backplane) => {
 	return <T extends (...args: any[]) => any>(
 		name: string,
 		handler: T,
 		options?: Options,
 	): Resource<T> => {
 		type Value = ReturnType<T>;
-		type Metadata = { expireAt: number };
 
 		const type = options?.type || 'json';
 		const lifetimes: Required<Lifetimes> = {
@@ -45,12 +46,11 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 					? make_id(name, await identify(args_array, SHA1))
 					: name;
 
-				const result = await read<Value, Metadata>(binding, key, {
-					metadata: true,
-					cacheTtl: lifetimes.ttl,
-					// @ts-expect-error TS2769
+				const result = await backplane.read<Value>(
+					key,
 					type,
-				});
+					lifetimes.ttl,
+				);
 
 				async function call(date = Date.now()) {
 					const raw_result = await Reflect.apply(
@@ -59,13 +59,15 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 						args_array,
 					);
 
-					context.waitUntil(
-						write<Value, Metadata>(binding, key, raw_result, {
-							metadata: {
+					backplane.defer(
+						backplane.put<Value>(
+							key,
+							raw_result,
+							{
 								expireAt: date + lifetimes.ttl * 1000,
 							},
-							expirationTtl: lifetimes.maxTtl,
-						}),
+							lifetimes.maxTtl,
+						),
 					);
 
 					return raw_result;
@@ -77,7 +79,7 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 						result.metadata!.expireAt == null ||
 						called_at >= result.metadata!.expireAt
 					) {
-						context.waitUntil(call(called_at));
+						backplane.defer(call(called_at));
 					}
 
 					return result.value;
