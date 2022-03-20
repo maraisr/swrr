@@ -5,7 +5,10 @@
 		"target": "esnext",
 		"removeComments": false,
 		"lib": ["esnext"],
-		"types": ["@types/node", "@cloudflare/workers-types"]
+		"types": ["@types/node", "@cloudflare/workers-types"],
+		"paths": {
+			"swrr": ["./src/index.d.ts"]
+		}
 	},
 	"include": ["src/**/*", "test/**/*"],
 	"exclude": ["node_modules"]

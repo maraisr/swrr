@@ -13,10 +13,12 @@
 	"module": "index.mjs",
 	"types": "index.d.ts",
 	"files": [
-		"index.*"
+		"index.d.ts",
+		"index.js",
+		"index.mjs"
 	],
 	"scripts": {
-		"build": "rollup -c",
+		"build": "bundt",
 		"format": "prettier --write --list-different \"{*,src/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
 		"test": "uvu test -r tsm \".spec.ts$\"",
 		"typecheck": "tsc --noEmit"
@@ -26,15 +28,14 @@
 		"worktop": "^0.8.0-next.11"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^3.4.0",
-		"@marais/tsconfig": "^0.0.2",
-		"@types/node": "^17.0.21",
-		"nanospy": "^0.5.0",
-		"prettier": "^2.5.1",
-		"rollup": "^2.68.0",
-		"rollup-plugin-dts": "^4.1.0",
-		"tsm": "^2.2.1",
-		"typescript": "^4.6.2",
-		"uvu": "^0.5.3"
+		"@cloudflare/workers-types": "3.4.0",
+		"@marais/tsconfig": "0.0.2",
+		"@types/node": "17.0.21",
+		"bundt": "2.0.0-next.0",
+		"nanospy": "0.5.0",
+		"prettier": "2.6.0",
+		"tsm": "2.2.1",
+		"typescript": "4.6.2",
+		"uvu": "0.5.3"
 	}
 }

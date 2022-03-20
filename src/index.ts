@@ -2,35 +2,13 @@ import { identify } from 'object-identity';
 import { read, write } from 'worktop/cfw.kv';
 import { SHA1 } from 'worktop/crypto';
 
-export type Lifetimes = {
-	/**
-	 * The amount of time to keep an entry in the cache, before refetching.
-	 */
-	ttl?: number;
-
-	/**
-	 * The ultimate ttl, the time at which a SWR will not respond.
-	 */
-	maxTtl?: number;
-};
-
-export type Options = Lifetimes & {
-	type?: 'json' | 'arrayBuffer' | 'stream' | 'text';
-};
-
-type Resource<T extends (...args: any[]) => any> = (
-	...args: Parameters<T>
-) => Promise<ReturnType<T>>;
+import type { Lifetimes, make as _make } from 'swrr';
 
 const make_id = (...key: string[]) => key.join('::');
 
-export const make = (binding: KVNamespace, context: ExecutionContext) => {
-	return <T extends (...args: any[]) => any>(
-		name: string,
-		handler: T,
-		options?: Options,
-	): Resource<T> => {
-		type Value = ReturnType<T>;
+export const make: typeof _make =
+	(binding, context) => (name, handler, options) => {
+		type Value = ReturnType<typeof handler>;
 		type Metadata = { expireAt: number };
 
 		const type = options?.type || 'json';
@@ -87,4 +65,3 @@ export const make = (binding: KVNamespace, context: ExecutionContext) => {
 			},
 		});
 	};
-};
