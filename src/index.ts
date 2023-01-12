@@ -1,15 +1,19 @@
 import { identify } from 'object-identity';
-import { read, write } from 'worktop/cfw.kv';
 import { SHA1 } from 'worktop/crypto';
 
-import type { Lifetimes, make as _make } from 'swrr';
+import type { Backplane } from './backplane';
+
+import type { Lifetimes, Options, Resource } from 'swrr';
 
 const make_id = (...key: string[]) => key.join('::');
 
-export const make: typeof _make =
-	(binding, context) => (name, handler, options) => {
-		type Value = ReturnType<typeof handler>;
-		type Metadata = { expireAt: number };
+export const make = (backplane: Backplane) => {
+	return <T extends (...args: any[]) => any>(
+		name: string,
+		handler: T,
+		options?: Options,
+	): Resource<T> => {
+		type Value = ReturnType<T>;
 
 		const type = options?.type || 'json';
 		const lifetimes: Required<Lifetimes> = {
@@ -23,12 +27,11 @@ export const make: typeof _make =
 					? make_id(name, await identify(args_array, SHA1))
 					: name;
 
-				const result = await read<Value, Metadata>(binding, key, {
-					metadata: true,
-					cacheTtl: lifetimes.ttl,
-					// @ts-expect-error TS2769
+				const result = await backplane.read<Value>(
+					key,
 					type,
-				});
+					lifetimes.ttl,
+				);
 
 				async function call(date = Date.now()) {
 					const raw_result = await Reflect.apply(
@@ -37,13 +40,15 @@ export const make: typeof _make =
 						args_array,
 					);
 
-					context.waitUntil(
-						write<Value, Metadata>(binding, key, raw_result, {
-							metadata: {
+					backplane.defer(
+						backplane.put<Value>(
+							key,
+							raw_result,
+							{
 								expireAt: date + lifetimes.ttl * 1000,
 							},
-							expirationTtl: lifetimes.maxTtl,
-						}),
+							lifetimes.maxTtl,
+						),
 					);
 
 					return raw_result;
@@ -55,7 +60,7 @@ export const make: typeof _make =
 						result.metadata!.expireAt == null ||
 						called_at >= result.metadata!.expireAt
 					) {
-						context.waitUntil(call(called_at));
+						backplane.defer(call(called_at));
 					}
 
 					return result.value;
@@ -65,3 +70,4 @@ export const make: typeof _make =
 			},
 		});
 	};
+};

@@ -33,7 +33,8 @@
 ```ts
 // file: my-worker.esm.ts
 
-import * as swr from 'swrr';
+import * as swrr from 'swrr';
+import * as Backplane from 'swrr/backplane.cfw.kv';
 
 const getPostsInCategorySince = async ({ category, since }) => {
   const posts = await cms.getPostsInCategory(category);
@@ -43,9 +44,12 @@ const getPostsInCategorySince = async ({ category, since }) => {
 
 export default {
   async fetch(req, env, ctx) {
+    // create a backplane
+    const backplane = Backplane.init(env.KV_NAMESPACE, ctx);
+
     // ⬇️️ create "container", all resources will batch in this boundary.
     //   ~> you'd probably want this in a middleware.
-    const makeResource = swr.make(env.KV_NAMESPACE, ctx);
+    const makeResource = swrr.make(backplane);
 
     // ⬇️ create a resource connected to a handler and name it
     const getLatestPosts = makeResource('posts', getPostsInCategorySince);
