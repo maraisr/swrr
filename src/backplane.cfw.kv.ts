@@ -1,7 +1,7 @@
 import { read, write } from 'worktop/cfw.kv';
 import type { Backplane, Metadata } from './backplane';
 
-export const make_backplane = (
+export const create = (
 	binding: KVNamespace,
 	context: ExecutionContext,
 ): Backplane => ({

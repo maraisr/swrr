@@ -7,13 +7,16 @@ import type { Lifetimes, Options, Resource } from 'swrr';
 
 const make_id = (...key: string[]) => key.join('::');
 
-export const make = (backplane: Backplane) => {
-	return <T extends (...args: any[]) => any>(
+export let BACKPLANE: Backplane;
+
+export const cache = <T extends (...args: any[]) => any>(
 		name: string,
 		handler: T,
 		options?: Options,
 	): Resource<T> => {
 		type Value = ReturnType<T>;
+
+		if (!BACKPLANE) throw new Error('No backplane has been initialized');
 
 		const type = options?.type || 'json';
 		const lifetimes: Required<Lifetimes> = {
@@ -27,7 +30,7 @@ export const make = (backplane: Backplane) => {
 					? make_id(name, await identify(args_array, SHA1))
 					: name;
 
-				const result = await backplane.read<Value>(
+				const result = await BACKPLANE.read<Value>(
 					key,
 					type,
 					lifetimes.ttl,
@@ -40,8 +43,8 @@ export const make = (backplane: Backplane) => {
 						args_array,
 					);
 
-					backplane.defer(
-						backplane.put<Value>(
+					BACKPLANE.defer(
+						BACKPLANE.put<Value>(
 							key,
 							raw_result,
 							{
@@ -60,7 +63,7 @@ export const make = (backplane: Backplane) => {
 						result.metadata!.expireAt == null ||
 						called_at >= result.metadata!.expireAt
 					) {
-						backplane.defer(call(called_at));
+						BACKPLANE.defer(call(called_at));
 					}
 
 					return result.value;
@@ -70,4 +73,3 @@ export const make = (backplane: Backplane) => {
 			},
 		});
 	};
-};

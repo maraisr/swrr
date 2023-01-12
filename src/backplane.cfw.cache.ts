@@ -23,7 +23,7 @@ const make_result = async (res: Response, type: string): Promise<any> => {
 	};
 };
 
-export const make_backplane = (context: ExecutionContext): Backplane => ({
+export const create = (context: ExecutionContext): Backplane => ({
 	read(key, type) {
 		return lookup(make_key(key)).then((res) => {
 			if (res === undefined) return { value: null, metadata: null };

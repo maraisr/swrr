@@ -34,7 +34,8 @@
 // file: my-worker.esm.ts
 
 import * as swrr from 'swrr';
-import * as Backplane from 'swrr/backplane.cfw.kv';
+import * as BackplaneKV from 'swrr/backplane.cfw.kv';
+import * as BackplaneCache from 'swrr/backplane.cfw.cache';
 
 const getPostsInCategorySince = async ({ category, since }) => {
   const posts = await cms.getPostsInCategory(category);
@@ -44,15 +45,14 @@ const getPostsInCategorySince = async ({ category, since }) => {
 
 export default {
   async fetch(req, env, ctx) {
-    // create a backplane
-    const backplane = Backplane.init(env.KV_NAMESPACE, ctx);
+    // init the backplane
+    BackplaneKV.init(env.KV_NAMESPACE, ctx);
 
-    // ⬇️️ create "container", all resources will batch in this boundary.
-    //   ~> you'd probably want this in a middleware.
-    const makeResource = swrr.make(backplane);
+    // ⬇️ wrap a function to be cached and name it
+    const getLatestPosts = swrr.cache('posts', getPostsInCategorySince);
 
-    // ⬇️ create a resource connected to a handler and name it
-    const getLatestPosts = makeResource('posts', getPostsInCategorySince);
+    // ⬇️ maybe with a custom backplane
+    const getTime = swrr.cache('time', () => Date.now(), BackplaneCache.create(ctx));
 
     // ... whatever elese
 
@@ -60,7 +60,7 @@ export default {
     const posts = await getLatestPosts({ category: 'foobar', since: '2022-01-01' });
 
     // ~> and one would now find a KV entry for
-    //      'posts__cdbdf4617568dc29453d3fee5f5ca79a7713b15f'
+    //      'posts::cdbdf4617568dc29453d3fee5f5ca79a7713b15f'
 
     return new Response(posts, { headers: { 'content-type': 'application/json' } });
   },
