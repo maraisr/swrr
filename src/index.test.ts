@@ -40,10 +40,7 @@ test('case', async () => {
 	const handler = Spy.spy((slug: string) => slug);
 
 	// ~> request bound
-	const broker = swr.make(
-		binding as any as KVNamespace,
-		context as any as ExecutionContext,
-	);
+	const broker = swr.make(binding as any as KVNamespace, context as any as ExecutionContext);
 
 	const getPosts = broker('posts', handler);
 
@@ -68,10 +65,7 @@ test('shouldnt call handler if time hasnt elapsed yet', async () => {
 	const binding = mock_kv();
 	const handler = Spy.spy((slug: string) => slug);
 
-	const broker = swr.make(
-		binding as any as KVNamespace,
-		context as any as ExecutionContext,
-	);
+	const broker = swr.make(binding as any as KVNamespace, context as any as ExecutionContext);
 
 	const getPosts = broker('posts', handler, {
 		ttl: 5,
@@ -92,11 +86,7 @@ test('shouldnt call handler if time hasnt elapsed yet', async () => {
 
 	assert.equal(await getPosts('my-slug'), 'my-slug');
 	assert.equal(date_spy.results, [0, 1000, 5000]);
-	assert.equal(
-		handler.callCount,
-		2,
-		'time elapsed, handler should have been called again',
-	);
+	assert.equal(handler.callCount, 2, 'time elapsed, handler should have been called again');
 
 	time = 7;
 
