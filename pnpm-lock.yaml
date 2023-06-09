@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   object-identity:
-    specifier: ^0.0.4
-    version: 0.0.4
+    specifier: ^0.0.6
+    version: 0.0.6
   worktop:
     specifier: ^0.8.0-next.11
     version: 0.8.0-next.11
@@ -603,8 +603,8 @@ packages:
     engines: {node: ^8.0.0 || ^10.0.0 || ^12.0.0 || ^14.0.0 || >=16.0.0}
     dev: true
 
-  /object-identity@0.0.4:
-    resolution: {integrity: sha512-aIiJgLkZ/XFP/t3KmCpQC/b5k4+b18rYchDy7h9RLMGwXdPkXvlNQukC/hB+8MpsGE6chBZvzF2A1e66HtoTIQ==}
+  /object-identity@0.0.6:
+    resolution: {integrity: sha512-5h112h/bIUVbPAUoNLbTCb2bpS8gJ3fJLqS8NJiEpNfa+0koq7X/C1GBhkcDiCiseS6dgc06Xe40BWxZyaySrw==}
     dev: false
 
   /prettier@2.8.8:
