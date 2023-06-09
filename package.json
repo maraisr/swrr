@@ -41,6 +41,6 @@
 	},
 	"prettier": "@marais/prettier",
 	"volta": {
-		"node": "17.9.1"
+		"node": "18.16.0"
 	}
 }
