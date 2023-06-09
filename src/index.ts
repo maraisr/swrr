@@ -4,8 +4,6 @@ import { SHA1 } from 'worktop/crypto';
 
 import type { Lifetimes, make as _make } from 'swrr';
 
-const make_id = (...key: string[]) => key.join('::');
-
 export const make: typeof _make = (binding, context) => (name, handler, options) => {
 	type Value = ReturnType<typeof handler>;
 	type Metadata = { expireAt: number };
@@ -19,7 +17,7 @@ export const make: typeof _make = (binding, context) => (name, handler, options)
 	return new Proxy(handler, {
 		async apply(target, this_arg, args_array) {
 			const key = args_array.length
-				? make_id(name, await identify(args_array, SHA1))
+				? name + '::' + await identify(args_array, SHA1)
 				: name;
 
 			const result = await read<Value, Metadata>(binding, key, {
