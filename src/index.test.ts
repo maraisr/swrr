@@ -2,7 +2,7 @@ import * as Spy from 'nanospy';
 import { webcrypto } from 'node:crypto';
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import * as swr from '../src';
+import * as swr from '.';
 
 // @ts-ignore
 globalThis.crypto = webcrypto;

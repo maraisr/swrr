@@ -18,9 +18,9 @@
 		"index.mjs"
 	],
 	"scripts": {
-		"build": "bundt",
-		"format": "prettier --write --list-different \"{*,src/*,test/*,bench/*,.github/**/*}.+(ts|js|json|yml|md)\"",
-		"test": "uvu test -r tsm \".spec.ts$\"",
+		"build": "bundt --minify",
+		"format": "prettier --write src .github *.md *.json",
+		"test": "uvu src \".test.ts$\" -r tsm",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
