@@ -11,6 +11,7 @@ const mock_kv = () => {
 	let store = new Map();
 
 	return {
+		store,
 		put: Spy.spy(async (key, value, metadata) => {
 			store.set(key, { value, ...metadata });
 			return true;
@@ -99,6 +100,20 @@ test('shouldnt call handler if time hasnt elapsed yet', async () => {
 	assert.equal(await getPosts('my-slug'), 'my-slug');
 	assert.equal(date_spy.results, [0, 1000, 5000, 7000, 13000]);
 	assert.equal(handler.callCount, 3, 'maxTtl exceeded, should call handler');
+});
+
+test('assures keys dont change', async () => {
+	const binding = mock_kv();
+	const handler = Spy.spy((slug: string) => slug);
+	const broker = swr.make(binding as any, context as any);
+
+	const getPosts = broker('posts', handler);
+	const data = await getPosts('my-slug');
+
+	assert.equal(data, 'my-slug');
+	assert.equal(handler.callCount, 1);
+	assert.equal(binding.put.callCount, 1);
+	assert.equal(binding.store.keys().next()?.value, 'posts::f75db37be2bee57123bdb9b8655967bdf834c222');
 });
 
 test.run();
