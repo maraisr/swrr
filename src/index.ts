@@ -17,7 +17,7 @@ export const make: typeof _make = (binding, context) => (name, handler, options)
 	return new Proxy(handler, {
 		async apply(target, this_arg, args_array) {
 			const key = args_array.length
-				? name + '::' + await identify(args_array, SHA1)
+				? name + '::' + await SHA1(identify(args_array))
 				: name;
 
 			const result = await read<Value, Metadata>(binding, key, {
