@@ -1,6 +1,8 @@
 {
 	"name": "swrr",
 	"version": "0.0.6",
+	"license": "MIT",
+	"author": "Marais Rossow <me@marais.dev> (https://marais.io)",
 	"sideEffects": false,
 	"exports": {
 		".": {
@@ -41,6 +43,6 @@
 		"uvu": "0.5.4"
 	},
 	"volta": {
-		"node": "18.16.0"
+		"node": "18.16.1"
 	}
 }
