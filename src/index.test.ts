@@ -113,7 +113,10 @@ test('assures keys dont change', async () => {
 	assert.equal(data, 'my-slug');
 	assert.equal(handler.callCount, 1);
 	assert.equal(binding.put.callCount, 1);
-	assert.equal(binding.store.keys().next()?.value, 'posts::f75db37be2bee57123bdb9b8655967bdf834c222');
+	assert.equal(
+		binding.store.keys().next()?.value,
+		'posts::f75db37be2bee57123bdb9b8655967bdf834c222',
+	);
 });
 
 test.run();
