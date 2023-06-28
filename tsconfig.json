@@ -1,12 +1,12 @@
 {
-	"extends": "@marais/tsconfig",
-	"compilerOptions": {
-		"baseUrl": ".",
-		"types": ["@types/node", "@cloudflare/workers-types"],
-		"paths": {
-			"swrr": ["src/index.d.ts"]
-		}
-	},
-	"include": ["src", "test"],
-	"exclude": ["node_modules"]
+  "extends": "@marais/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["@types/node", "@cloudflare/workers-types"],
+    "paths": {
+      "swrr": ["src/index.d.ts"]
+    }
+  },
+  "include": ["src", "test"],
+  "exclude": ["node_modules"]
 }
