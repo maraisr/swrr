@@ -1,15 +1,12 @@
 {
 	"extends": "@marais/tsconfig",
 	"compilerOptions": {
-		"rootDir": ".",
-		"target": "esnext",
-		"removeComments": false,
-		"lib": ["esnext"],
+		"baseUrl": ".",
 		"types": ["@types/node", "@cloudflare/workers-types"],
 		"paths": {
-			"swrr": ["./src/index.d.ts"]
+			"swrr": ["src/index.d.ts"]
 		}
 	},
-	"include": ["src/**/*", "test/**/*"],
+	"include": ["src", "test"],
 	"exclude": ["node_modules"]
 }
