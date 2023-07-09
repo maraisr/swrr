@@ -1,27 +1,35 @@
-<div align="right">
-<h1><code>swrr</code></h1>
-<sub><b>S</b>tale <b>W</b>hile <b>R</b>evalidate <b>R</b>esource</sub>
-<br />
-<br />
+<div align="left">
 
-<p><code>npm add swrr</code> makes resources fast</p>
-<span>
-<a href="https://github.com/maraisr/swrr/actions/workflows/ci.yml">
-	<img src="https://github.com/maraisr/swrr/actions/workflows/ci.yml/badge.svg"/>
-</a>
+<samp>
+
+# swrr
+
+</samp>
+
+<b>S</b>tale <b>W</b>hile <b>R</b>evalidate <b>R</b>esource · <b>an edge pass-through cache utility</b>
+
 <a href="https://npm-stat.com/charts.html?package=swrr">
-	<img src="https://badgen.net/npm/dw/swrr?labelColor=black&color=black&cache=600" alt="downloads"/>
+  <img src="https://badgen.net/npm/dm/swrr?color=black&label=npm%20downloads" alt="js downloads">
 </a>
-<a href="https://packagephobia.com/result?p=swrr">
-	<img src="https://badgen.net/packagephobia/install/swrr?labelColor=black&color=black" alt="size"/>
+<a href="https://unpkg.com/swrr/index.mjs">
+  <img src="https://img.badgesize.io/https://unpkg.com/swrr/index.mjs?compression=gzip&label=gzip&color=black" alt="gzip size" />
 </a>
-<a href="https://bundlephobia.com/result?p=swrr">
-	<img src="https://badgen.net/bundlephobia/minzip/swrr?labelColor=black&color=black" alt="size"/>
+<a href="https://unpkg.com/swrr/index.mjs">
+  <img src="https://img.badgesize.io/https://unpkg.com/swrr/index.mjs?compression=brotli&label=brotli&color=black" alt="brotli size" />
 </a>
-</span>
 
-<br />
-<br />
+<br>
+<br>
+
+<sup>
+
+This is free to use software, but if you do like it, consisder supporting me ❤️
+
+[![sponsor me](https://badgen.net/badge/icon/sponsor?icon=github&label&color=gray)](https://github.com/sponsors/maraisr)
+[![buy me a coffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label&color=gray)](https://www.buymeacoffee.com/marais)
+
+</sup>
+
 </div>
 
 > **Caveat** ~ Currently cache backplane is assumed to be
