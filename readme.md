@@ -11,6 +11,9 @@
 <a href="https://npm-stat.com/charts.html?package=swrr">
   <img src="https://badgen.net/npm/dm/swrr?color=black&label=npm%20downloads" alt="js downloads">
 </a>
+<a href="https://licenses.dev/npm/swrr">
+  <img src="https://licenses.dev/b/npm/swrr?style=dark" alt="licenses" />
+</a>
 <a href="https://unpkg.com/swrr/index.mjs">
   <img src="https://img.badgesize.io/https://unpkg.com/swrr/index.mjs?compression=gzip&label=gzip&color=black" alt="gzip size" />
 </a>
