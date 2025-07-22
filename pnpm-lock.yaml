@@ -16,8 +16,8 @@ importers:
         version: 0.8.0-next.15
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: 4.20230518.0
-        version: 4.20230518.0
+        specifier: 4.20250722.0
+        version: 4.20250722.0
       '@marais/prettier':
         specifier: 0.0.4
         version: 0.0.4
@@ -25,8 +25,8 @@ importers:
         specifier: 0.0.4
         version: 0.0.4
       '@types/node':
-        specifier: 20.3.2
-        version: 20.3.2
+        specifier: 24.0.15
+        version: 24.0.15
       bundt:
         specifier: 2.0.0-next.5
         version: 2.0.0-next.5
@@ -34,22 +34,22 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       prettier:
-        specifier: 2.8.8
-        version: 2.8.8
+        specifier: 3.6.2
+        version: 3.6.2
       tsm:
         specifier: 2.3.0
         version: 2.3.0
       typescript:
-        specifier: 5.1.3
-        version: 5.1.3
+        specifier: 5.8.3
+        version: 5.8.3
       uvu:
         specifier: 0.5.4
         version: 0.5.4
 
 packages:
 
-  '@cloudflare/workers-types@4.20230518.0':
-    resolution: {integrity: sha512-A0w1V+5SUawGaaPRlhFhSC/SCDT9oQG8TMoWOKFLA4qbqagELqEAFD4KySBIkeVOvCBLT1DZSYBMCxbXddl0kw==}
+  '@cloudflare/workers-types@4.20250722.0':
+    resolution: {integrity: sha512-pTY+A07DTSacgUBYcVEEb78/KG7THdcRpPqXLeH/A/LHHobAddgN4zyXBldsoZuzy7bD9tZYJW+wkcyR4k7fDA==}
 
   '@esbuild/android-arm@0.15.18':
     resolution: {integrity: sha512-5GT+kcs2WVGjVs7+boataCkO5Fg0y4kCjzkB5bAip7H4jfnOS3dA6KPiww9W1OEKTKeAcUVhdZGvgI65OXmUnw==}
@@ -91,8 +91,8 @@ packages:
   '@marais/tsconfig@0.0.4':
     resolution: {integrity: sha512-b6KCal22xP6E8wgl52rxdf8MXuffI4oJ9aTosucX4aVb97yl01wU0PzGF67oMA/i9KdzLa0rjQ0zVdZ+1pvVAg==}
 
-  '@types/node@20.3.2':
-    resolution: {integrity: sha512-vOBLVQeCQfIcF/2Y7eKFTqrMnizK5lRNQ7ykML/5RuwVXVWxYkgwS7xbt4B6fKCUPgbSL5FSsjHQpaGQP/dQmw==}
+  '@types/node@24.0.15':
+    resolution: {integrity: sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA==}
 
   acorn@8.15.0:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
@@ -387,9 +387,9 @@ packages:
   object-identity@0.1.2:
     resolution: {integrity: sha512-Px5puVllX5L2aBjbcfXpiG5xXeq6OE8RckryTeP2Zq+0PgYrCGJXmC6LblWgknKSJs11Je2W4U2NOWFj3t/QXQ==}
 
-  prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
-    engines: {node: '>=10.13.0'}
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+    engines: {node: '>=14'}
     hasBin: true
 
   regexparam@2.0.2:
@@ -421,10 +421,13 @@ packages:
     engines: {node: '>=12'}
     hasBin: true
 
-  typescript@5.1.3:
-    resolution: {integrity: sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==}
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  undici-types@7.8.0:
+    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
 
   uvu@0.5.4:
     resolution: {integrity: sha512-x1CyUjcP9VKaNPhjeB3FIc/jqgLsz2Q9LFhRzUTu/jnaaHILEGNuE0XckQonl8ISLcwyk9I2EZvWlYsQnwxqvQ==}
@@ -437,7 +440,7 @@ packages:
 
 snapshots:
 
-  '@cloudflare/workers-types@4.20230518.0': {}
+  '@cloudflare/workers-types@4.20250722.0': {}
 
   '@esbuild/android-arm@0.15.18':
     optional: true
@@ -471,7 +474,9 @@ snapshots:
 
   '@marais/tsconfig@0.0.4': {}
 
-  '@types/node@20.3.2': {}
+  '@types/node@24.0.15':
+    dependencies:
+      undici-types: 7.8.0
 
   acorn@8.15.0: {}
 
@@ -668,7 +673,7 @@ snapshots:
 
   object-identity@0.1.2: {}
 
-  prettier@2.8.8: {}
+  prettier@3.6.2: {}
 
   regexparam@2.0.2: {}
 
@@ -696,7 +701,9 @@ snapshots:
     dependencies:
       esbuild: 0.15.18
 
-  typescript@5.1.3: {}
+  typescript@5.8.3: {}
+
+  undici-types@7.8.0: {}
 
   uvu@0.5.4:
     dependencies:
